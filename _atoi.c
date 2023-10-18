@@ -1,10 +1,10 @@
 #include "shell.h"
 
 /**
- * interactive - returns  code to be true if shell is in interactive mode
- * @info: the structure address
+ * interactive - returns  code to true when shell is in interactive
+ * @info: structure address
  *
- * Return: if interactive in  mode return 1, 0 otherwise
+ * Return: if interactive in  mode return 1, 0
 */
 int interactive(info_t *info)
 {
@@ -12,10 +12,10 @@ int interactive(info_t *info)
 }
 
 /**
- * is_delim - checks if character is a delimeter
- * @c: character  to check
+ * is_delim - checks code when character is delimeter
+ * @c: character check
  * @delim: delimeter string
- * Return: if true return 1, if false return 0
+ * Return: if false return 0, if true return 1
 */
 int is_delim(char c, char *delim)
 {
@@ -26,9 +26,9 @@ int is_delim(char c, char *delim)
 }
 
 /**
- * _isalpha - checks for alphabetic character
- * @c: The character to input
- * Return: if c is alphabetic return 1, otherwise return 0
+ * _isalpha - checks for alphabet all character
+ * @c: character input
+ * Return: if c is alphabet return 1, other return 0
 */
 int _isalpha(int c)
 {
@@ -39,34 +39,34 @@ int _isalpha(int c)
 }
 
 /**
- * _atoi - converts the  string to an integer
- * @s: string to be converted
- * Return:  if no numbers in string return 0,  otherwise converted number
+ * _atoi - converts string to integer
+ * @s: string should be converted
+ * Return: if no numbers in the string return 0, other converte the number
 */
 int _atoi(char *s)
 {
-	int j, sign = 1, flag = 0, output;
+	int str, sgn = 1, flag = 0, opt;
 	unsigned int result = 0;
 
-	for (j = 0; s[j] != '\0' && flag != 2; j++)
+	for (str = 0; s[str] != '\0' && flag != 2; str++)
 	{
-		if (s[j] == '-')
-			sign *= -1;
+		if (s[str] == '-')
+			sgn *= -1;
 
-		if (s[j] >= '0' && s[j] <= '9')
+		if (s[str] >= '0' && s[str] <= '9')
 		{
 			flag = 1;
 			result *= 10;
-			result += (s[j] - '0');
+			result += (s[str] - '0');
 		}
 		else if (flag == 1)
 			flag = 2;
 	}
 
-	if (sign == -1)
-		output = -result;
+	if (sgn == -1)
+		opt = -result;
 	else
-		output = result;
+		opt = result;
 
-	return (output);
+	return (opt);
 }
