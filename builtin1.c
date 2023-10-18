@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * _myhistory - displays history the list, one of command by line, preceded

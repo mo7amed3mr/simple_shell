@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * clear_info - initialize info_t the struct
