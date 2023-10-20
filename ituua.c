@@ -1,72 +1,70 @@
-#include "main.h"
+#include "shell.h"
 
 /**
- * interactive - returns  code to true when shell is in interactive
- * @info: structure address
- *
- * Return: if interactive in  mode return 1, 0
+ * num_len - Counts the digit length of a number.
+ * @num: the number to be count.
+ * Return: length.
 */
-int interactive(info_t *info)
+int num_len(int num)
 {
-	return (isatty(STDIN_FILENO) && info->readfd <= 2);
-}
+	unsigned int num1;
+	int length = 1;
 
-/**
- * is_delim - checks code when character is delimeter
- * @c: character check
- * @delim: delimeter string
- * Return: if false return 0, if true return 1
-*/
-int is_delim(char c, char *delim)
-{
-	while (*delim)
-		if (*delim++ == c)
-			return (1);
-	return (0);
-}
-
-/**
- * _isalpha - checks for alphabet all character
- * @c: character input
- * Return: if c is alphabet return 1, other return 0
-*/
-int _isalpha(int c)
-{
-	if ((c >= 'b' && c <= 'x') || (c >= 'B' && c <= 'X'))
-		return (1);
-	else
-		return (0);
-}
-
-/**
- * _atoi - converts string to integer
- * @s: string should be converted
- * Return: if no numbers in the string return 0, other converte the number
-*/
-int _atoi(char *s)
-{
-	int str, sgn = 1, flag = 0, opt;
-	unsigned int result = 0;
-
-	for (str = 0; s[str] != '\0' && flag != 2; str++)
+	if (num < 0)
 	{
-		if (s[str] == '-')
-			sgn *= -1;
+		length++;
 
-		if (s[str] >= '0' && s[str] <= '9')
-		{
-			flag = 1;
-			result *= 10;
-			result += (s[str] - '0');
-		}
-		else if (flag == 1)
-			flag = 2;
+		num1 = num * -1;
+	}
+	else
+	{
+		num1 = num;
 	}
 
-	if (sgn == -1)
-		opt = -result;
-	else
-		opt = result;
+	while (num > 9)
+	{
+		length++;
+		num1 /= 10;
+	}
 
-	return (opt);
+	return (length);
+}
+
+/**
+ * _itoa - Converts an int to a string.
+ * @num: the number to be count.
+ * Return: beffer.
+*/
+char *_itoa(int num)
+{
+	int length = num_len(num);
+	unsigned int num1;
+	char *buffer;
+
+	buffer = malloc(sizeof(char) * (length + 1));
+
+	if (!buffer)
+		return (NULL);
+
+	buffer[length] = '\0';
+
+	if (num < 0)
+	{
+		num1 = num * -1;
+		buffer[0] = '-';
+	}
+	else
+	{
+		num1 = num;
+	}
+
+	length--;
+
+	do {
+		buffer[length] = (num1 % 10) + '0';
+		num1 /= 10;
+		length--;
+	} while (num1 > 0);
+
+	return (buffer);
 }

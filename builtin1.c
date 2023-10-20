@@ -1,111 +1,81 @@
-#include "main.h"
+#include "shell.h"
 
 /**
- * _myhistory - displays history the list, one of command by line, preceded
- *              with the line numbers, starting from 0.
- * @info: the struct containing potential arguments.
- *		for constant function prototype.
- * Return: 0 always
+ * help_all - Displays builtin shellby commands.
 */
-int _myhistory(info_t *info)
+void help_all(void)
 {
-	print_list(info->history);
-	return (0);
+	char *msg = "Shellby\nThese shell commands are defined internally.\n";
+
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "Type 'help' to see this list.\nType 'help name' to find ";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "out more about the function 'name'.\n\n  alias   \t";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "alias [NAME[='VALUE'] ...]\n  cd    \tcd   ";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "[DIRECTORY]\n  exit    \texit [STATUS]\n  env     \tenv";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "\n  setenv  \tsetenv [VARIABLE] [VALUE]\n  unsetenv\t";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "unsetenv [VARIABLE]\n";
+	write(STDOUT_FILENO, msg, _strlen(msg));
 }
 
 /**
- * unset_alias - sets alias to the strings
- * @info: parameter the structure
- * @str: string
- * Return: success 0,  error 1.
+ * help_alias - Displays the shellby builtin command 'alias'.
 */
-int unset_alias(info_t *info, char *str)
+void help_alias(void)
 {
-	char *q, w;
-	int rett;
+	char *msg = "alias: alias [NAME[='VALUE'] ...]\n\tHandles aliases.\n";
 
-	q = _strchr(str, '=');
-	if (!q)
-		return (1);
-	w = *q;
-	*q = 0;
-	rett = delete_node_at_index(&(info->alias),
-		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
-	*q = w;
-	return (rett);
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "\n\talias: Prints a list of all aliases, one per line, in ";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "the format NAME='VALUE'.\n\talias name [name2 ...]:prints";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = " the aliases name, name2, etc. one per line, in the ";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "form NAME='VALUE'.\n\talias NAME='VALUE' [...]: Defines";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = " an alias for each NAME whose VALUE is given. If NAME ";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "is already an alias, replace its value with VALUE.\n";
+	write(STDOUT_FILENO, msg, _strlen(msg));
 }
 
 /**
- * set_alias - this code sets alias to the all string
- * @info: this is the parameter the structure
- * @str: string
- * Return: if success return 0, if error return 1
+ * help_cd - Displays the shellby builtin command 'cd'.
 */
-int set_alias(info_t *info, char *str)
+void help_cd(void)
 {
-	char *q;
+	char *msg = "cd: cd [DIRECTORY]\n\tChanges the current directory of the";
 
-	q = _strchr(str, '=');
-	if (!q)
-		return (1);
-	if (!*++q)
-		return (unset_alias(info, str));
-
-	unset_alias(info, str);
-	return (add_node_end(&(info->alias), str, 0) == NULL);
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = " process to DIRECTORY.\n\n\tIf no argument is given, the ";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "command is interpreted as cd $HOME. If the argument '-' is";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = " given, the command is interpreted as cd $OLDPWD.\n\n";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "\tThe environment variables PWD and OLDPWD are updated ";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "after a change of directory.\n";
+	write(STDOUT_FILENO, msg, _strlen(msg));
 }
 
 /**
- * print_alias - this prints an alias the string in code
- * @node: aliass node
- * Return: if success 0, if error 1
+ * help_exit - Displays the shellby builtin command 'exit'.
 */
-int print_alias(list_t *node)
+void help_exit(void)
 {
-        char *q = NULL, *b = NULL;
+	char *msg = "exit: exit [STATUS]\n\tExits the shell.\n\n\tThe ";
 
-        if (node)
-        {
-                q = _strchr(node->str, '=');
-                for (b = node->str; b <= q; b++)
-                _putchar(*b);
-                _putchar('\'');
-                _puts(q + 1);
-                _puts("'\n");
-                return (0);
-        }
-        return (1);
-}
-
-/**
- * _myalias - mimics the alias the builtin
- * @info: the structure containing arguments. to main prototype.
- * Return: 0 always.
-*/
-int _myalias(info_t *info)
-{
-        int e = 0;
-        char *q = NULL;
-        list_t *node = NULL;
-
-        if (info->argc == 1)
-        {
-                node = info->alias;
-                while (node)
-                {
-                        print_alias(node);
-                        node = node->next;
-                }
-                return (0);
-        }
-        for (e = 1; info->argv[e]; e++)
-        {
-                q = _strchr(info->argv[e], '=');
-                if (q)
-                        set_alias(info, info->argv[e]);
-                else
-                        print_alias(node_starts_with(info->alias, info->argv[e], '='));
-        }
-
-        return (0);
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = "STATUS argument is the integer used to exit the shell.";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = " If no argument is given, the command is interpreted as";
+	write(STDOUT_FILENO, msg, _strlen(msg));
+	msg = " exit 0.\n";
+	write(STDOUT_FILENO, msg, _strlen(msg));
 }
